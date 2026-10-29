@@ -3,6 +3,8 @@ package com.eventbooking.event_booking_system.service;
 import com.eventbooking.event_booking_system.dto.RegisterRequest;
 import com.eventbooking.event_booking_system.entity.User;
 import com.eventbooking.event_booking_system.repository.UserRepository;
+import com.eventbooking.event_booking_system.dto.LoginRequest;
+import com.eventbooking.event_booking_system.exception.InvalidCredentialsException;
 import com.eventbooking.event_booking_system.dto.UserResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +42,28 @@ public class UserService {
                 savedUser.getFullName(),
                 savedUser.getEmail(),
                 savedUser.getRole()
+        );
+    }
+
+    public UserResponse loginUser(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(InvalidCredentialsException::new);
+
+        boolean passwordMatches = passwordEncoder.matches(
+                request.getPassword(),
+                user.getPasswordHash()
+        );
+
+        if (!passwordMatches) {
+            throw new InvalidCredentialsException();
+        }
+
+        return new UserResponse(
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getRole()
         );
     }
 
