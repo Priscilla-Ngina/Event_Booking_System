@@ -5,6 +5,8 @@ import com.eventbooking.event_booking_system.entity.User;
 import com.eventbooking.event_booking_system.repository.UserRepository;
 import com.eventbooking.event_booking_system.dto.LoginRequest;
 import com.eventbooking.event_booking_system.exception.InvalidCredentialsException;
+import com.eventbooking.event_booking_system.security.JwtService;
+import com.eventbooking.event_booking_system.dto.LoginResponse;
 import com.eventbooking.event_booking_system.dto.UserResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +18,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService= jwtService;
     }
 
     public UserResponse registerUser(RegisterRequest request){
@@ -45,7 +49,7 @@ public class UserService {
         );
     }
 
-    public UserResponse loginUser(LoginRequest request) {
+    public LoginResponse loginUser(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(InvalidCredentialsException::new);
@@ -59,12 +63,16 @@ public class UserService {
             throw new InvalidCredentialsException();
         }
 
-        return new UserResponse(
+        UserResponse userResponse = new UserResponse(
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
                 user.getRole()
         );
+
+        String token = jwtService.generateToken(user.getEmail());
+
+        return new LoginResponse(userResponse, token);
     }
 
 }

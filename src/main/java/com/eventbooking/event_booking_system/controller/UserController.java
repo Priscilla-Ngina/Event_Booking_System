@@ -4,6 +4,7 @@ import com.eventbooking.event_booking_system.dto.RegisterRequest;
 import com.eventbooking.event_booking_system.entity.User;
 import com.eventbooking.event_booking_system.dto.UserResponse;
 import com.eventbooking.event_booking_system.dto.LoginRequest;
+import com.eventbooking.event_booking_system.dto.LoginResponse;
 import com.eventbooking.event_booking_system.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserResponse loginUser(
+    public LoginResponse loginUser(
             @Valid @RequestBody LoginRequest request) {
 
         return userService.loginUser(request);
