@@ -207,6 +207,7 @@ public class TicketTypeService {
                 ticketType.getPrice(),
                 ticketType.getTotalQuantity(),
                 ticketType.getSoldQuantity(),
+                ticketType.getReservedQuantity(),
                 ticketType.getSalesStartDate(),
                 ticketType.getSalesEndDate(),
                 ticketType.getActive()

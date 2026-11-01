@@ -27,6 +27,9 @@ public class TicketType {
     @Column(nullable = false)
     private Integer soldQuantity = 0;
 
+    @Column(nullable = false)
+    private Integer reservedQuantity = 0;
+
     private LocalDateTime salesStartDate;
 
     private LocalDateTime salesEndDate;
@@ -76,6 +79,18 @@ public class TicketType {
 
     public void setSoldQuantity(Integer soldQuantity) {
         this.soldQuantity = soldQuantity;
+    }
+
+    public Integer getReservedQuantity() {
+        return reservedQuantity;
+    }
+
+    public void setReservedQuantity(Integer reservedQuantity) {
+        this.reservedQuantity = reservedQuantity;
+    }
+
+    public Integer getAvailableQuantity() {
+        return totalQuantity - soldQuantity - reservedQuantity;
     }
 
     public LocalDateTime getSalesStartDate() {

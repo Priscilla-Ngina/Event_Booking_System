@@ -16,16 +16,11 @@ public class TicketTypeResponse {
     private final LocalDateTime salesEndDate;
     private final Boolean active;
 
-    public TicketTypeResponse(
-            Long id,
-            Long eventId,
-            String name,
-            BigDecimal price,
-            Integer totalQuantity,
-            Integer soldQuantity,
-            LocalDateTime salesStartDate,
-            LocalDateTime salesEndDate,
-            Boolean active) {
+    public TicketTypeResponse(Long id, Long eventId, String name,
+                              BigDecimal price, Integer totalQuantity,
+                              Integer soldQuantity, Integer reservedQuantity,
+                              LocalDateTime salesStartDate,
+                              LocalDateTime salesEndDate, Boolean active) {
 
         this.id = id;
         this.eventId = eventId;
@@ -33,7 +28,7 @@ public class TicketTypeResponse {
         this.price = price;
         this.totalQuantity = totalQuantity;
         this.soldQuantity = soldQuantity;
-        this.availableQuantity = totalQuantity - soldQuantity;
+        this.availableQuantity = totalQuantity - soldQuantity - reservedQuantity;
         this.salesStartDate = salesStartDate;
         this.salesEndDate = salesEndDate;
         this.active = active;
